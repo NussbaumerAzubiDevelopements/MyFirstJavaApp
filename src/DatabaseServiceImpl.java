@@ -30,7 +30,7 @@ public class DatabaseServiceImpl implements DatabaseServiceInterface {
             Statement stmt = con.createStatement();
 
             String query = "INSERT INTO public.personen(pers_id, nachname, vorname, rolle)" +
-                    " VALUES (" + insertPerson.getPersId() + ", '" + insertPerson.getNachname() + "','" +
+                    " VALUES (nextval('person_sequence'), '" + insertPerson.getNachname() + "','" +
                     insertPerson.getVorname() + "' ,'" + insertPerson.getRolle() + "');";
 
             result = stmt.executeUpdate(query);

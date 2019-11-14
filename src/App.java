@@ -11,11 +11,16 @@ import java.util.Scanner;
 
 public class App {
     static int iFinal = 0;
-//    static DatabaseServiceInterface db = new DatabaseServiceImpl();
+    //    static DatabaseServiceInterface db = new DatabaseServiceImpl();
     static DatabaseServiceInterface db = DatabaseServiceImpl.getInstance();
+    static TaskDatabaseSevice taskDatabaseSevice = new TaskDatabaseSevice();
 
 
     public static void main(String[] args) {
+
+
+        Tasks tasks1 = taskDatabaseSevice.fetchTask(3);
+
         Scanner keyboardInput = new Scanner(System.in);
         boolean exitFlag = false;
 
@@ -26,28 +31,46 @@ public class App {
 
         while (exitFlag != true) {
 
-            System.out.print("\nWhat would you like to do? (show, add, update, delete, exit):");
+            System.out.print("\nWhat would you like to do? (show Persons = 1, add Person = 2, update Person = 3," +
+                    " delete Person = 4, show Tasks = 5, add Task = 6, update Task = 7, delete Task = 8, exit = 9):");
 
             switch (keyboardInput.next()) {
-                case "add":
+                case "2":
                     insertDbData();
                     break;
-                case "delete":
-                    System.out.print("Which user woud you like to delete? (person id):");
+                case "6":
+                    showTasks();
+                    break;
+                case "4":
+                    System.out.print("Which user would you like to delete? (person id):");
                     deleteDbData(keyboardInput.nextInt());
+                    break;
+                case "8":
+                    System.out.print("Which task would you like to delete? (task id):");
+                    deleteTasks(keyboardInput.nextInt());
                     break;
                 case "exit":
                     exitFlag = true;
                     db.close();
                     System.out.println("Good bye " + name);
                     break;
-                case "show":
+                case "1":
                     System.out.println("Below is a list of Persons available");
                     getDbData();
                     break;
-                case "update":
-                    System.out.println("Which user woud you like to update? (person id):");
+                case "5":
+                    System.out.println("Below is a list of Tasks");
+                    showTasks();
+                    break;
+                case "3":
+                    System.out.println("Which user would you like to update? (person id):");
                     updateDbData(keyboardInput.nextInt());
+                    break;
+                case "7":
+                    System.out.println("Below is a list of Tasks");
+                    showTasks();
+                    System.out.println("Which task would you like to update? (task id):");
+//                    (keyboardInput.nextInt());
                     break;
 
                 default:
@@ -58,7 +81,17 @@ public class App {
         //insertDbData();
         //
         //tryingNewClasses();
+        //showTasks();
+        //deleteTasks();
 
+    }
+
+    private static void deleteTasks(int taskId) {
+    }
+
+    private static void showTasks() {
+
+        List<Tasks> tasks = taskDatabaseSevice.fetchAllTasks();
     }
 
 
@@ -139,9 +172,7 @@ public class App {
         Persons newPerson = new Persons();
 
         //Get user input from keyboard, set input on new person instance in two steps
-        System.out.print("User ID :");
-        int persId = keyboardInput.nextInt();
-        newPerson.setPersId(persId);
+
 
         //Get user input from keyboard, set input on new person instance in one step
         System.out.print("User surname/Nachname :");
@@ -276,7 +307,6 @@ public class App {
     //while(rs.next())
     //System.out.println(rs.getInt(1)+"  "+rs.getString(2)+"  "+rs.getString(3)+"   "+rs.getString(4));
 //}
-
 
 
 }
