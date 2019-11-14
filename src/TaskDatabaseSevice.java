@@ -1,8 +1,6 @@
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class TaskDatabaseSevice {
@@ -14,7 +12,7 @@ public class TaskDatabaseSevice {
     public TaskDatabaseSevice() {
         try {
             this.con = DriverManager.getConnection(url, user, password);
-            System.out.println("Database connection established");
+            System.out.println("Database connection for table 'Tasks' is established");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -77,12 +75,19 @@ public class TaskDatabaseSevice {
 //        return result;
 //    }
 
-    public int update(Tasks updateTaskStatus) {
+    public int updateStatus(Tasks updateTaskStatus) {
         int result = 0;
         try {
             Statement stmt = this.con.createStatement();
 
-            String query = "UPDATE public.Tasks SET status=? WHERE <condition>;";
+            Date startDate = updateTaskStatus.getStartDate();
+            Date completionDate = updateTaskStatus.getCompletionDate();
+
+            String query = "UPDATE public.tasks SET status='"+updateTaskStatus.getStatus()+
+                    "SET startDate = " + startDate +
+                    "SET completeDate = " + completionDate +
+                    "' WHERE task_id = "+
+                    updateTaskStatus.getTaskId() +";";
 
             result = stmt.executeUpdate(query);
 
@@ -151,6 +156,32 @@ public class TaskDatabaseSevice {
             System.out.println(e);
         }
         return taskA;
+    }
+
+    public int updateDescription(Tasks taskToBeUpdated) {
+        int result = 0;
+        try {
+            Statement stmt = this.con.createStatement();
+
+            String query = "UPDATE public.tasks SET description ='" + taskToBeUpdated.getDescription() +
+                    "' WHERE task_id = "+
+                            taskToBeUpdated.getTaskId() +";";
+
+            result = stmt.executeUpdate(query);
+
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return result;
+    }
+    public void close() {
+        try {
+            this.con.close();
+            System.out.println("Connection to database is now closed." );
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
     }
 }
 

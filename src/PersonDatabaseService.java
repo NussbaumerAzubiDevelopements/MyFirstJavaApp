@@ -1,9 +1,8 @@
-import java.nio.channels.GatheringByteChannel;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DatabaseServiceImpl implements DatabaseServiceInterface {
+public class PersonDatabaseService implements DatabaseServiceInterface {
 
     private final String url = "jdbc:postgresql://160.47.9.154:15432/q450811";
     private final String user = "admin";
@@ -12,10 +11,10 @@ public class DatabaseServiceImpl implements DatabaseServiceInterface {
     private static DatabaseServiceInterface instance;
 
 
-    private DatabaseServiceImpl() {
+    private PersonDatabaseService() {
         try {
             this.con = DriverManager.getConnection(url, user, password);
-            System.out.println("Database connection established");
+            System.out.println("Database connection table 'Pesons' is established");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -113,10 +112,32 @@ public class DatabaseServiceImpl implements DatabaseServiceInterface {
 
     }
 
+    @Override
+    public Persons fetchById(int userId) {
+        Persons persons = new Persons();
+        try {
+
+            //Creating a statement instance from the connection
+            Statement stmt = con.createStatement();
+
+            //Creating a result set from the executed statement query
+            ResultSet rs = stmt.executeQuery("SELECT * from public.personen WHERE pers_id =" + userId +  "LIMIT 1;");
+
+            if (rs.next()) {
+                persons = new Persons(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4));
+            }else {
+                System.out.println("No records found for person ID: " + userId);
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return persons;
+    }
+
 
     public static DatabaseServiceInterface getInstance() {
         if (instance == null){
-            instance = new DatabaseServiceImpl();
+            instance = new PersonDatabaseService();
         }
         return instance;
     }

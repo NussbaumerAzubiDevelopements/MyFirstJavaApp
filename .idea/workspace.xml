@@ -2,15 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="48d67369-8220-4385-9e35-31ed58e2df02" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/sql/tables.sql" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/App_Tasks.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/TaskDatabaseSevice.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Tasks.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/App.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DatabaseServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DatabaseServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Task.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/DatabaseServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/PersonDatabaseService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/DatabaseServiceInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DatabaseServiceInterface.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/TaskDatabaseSevice.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/TaskDatabaseSevice.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -107,7 +103,14 @@
       <option name="project" value="LOCAL" />
       <updated>1573548843578</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="continue working on tasks">
+      <created>1573719472886</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1573719472886</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -126,7 +129,8 @@
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <MESSAGE value="Started working on tasks" />
-    <option name="LAST_COMMIT_MESSAGE" value="Started working on tasks" />
+    <MESSAGE value="continue working on tasks" />
+    <option name="LAST_COMMIT_MESSAGE" value="continue working on tasks" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -135,11 +139,6 @@
           <url>file://$PROJECT_DIR$/src/JavaStrings.java</url>
           <line>30</line>
           <option name="timeStamp" value="9" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/App.java</url>
-          <line>21</line>
-          <option name="timeStamp" value="21" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

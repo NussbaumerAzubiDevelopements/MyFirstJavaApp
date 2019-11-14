@@ -8,6 +8,8 @@ public interface DatabaseServiceInterface {
     List<Persons> fetchAll();
     void close();
 
+    Persons fetchById(int userId);
+
 //    static DatabaseServiceInterface getInstance() {
 //        if (instance == null){
 //            instance = new DatabaseServiceImpl();

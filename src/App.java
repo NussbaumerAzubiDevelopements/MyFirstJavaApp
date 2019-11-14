@@ -1,32 +1,25 @@
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.Scanner;
 
 public class App {
     static int iFinal = 0;
     //    static DatabaseServiceInterface db = new DatabaseServiceImpl();
-    static DatabaseServiceInterface db = DatabaseServiceImpl.getInstance();
+    static DatabaseServiceInterface personDbService = PersonDatabaseService.getInstance();
     static TaskDatabaseSevice taskDatabaseSevice = new TaskDatabaseSevice();
 
 
     public static void main(String[] args) {
 
-
-        Tasks tasks1 = taskDatabaseSevice.fetchTask(3);
-
         Scanner keyboardInput = new Scanner(System.in);
         boolean exitFlag = false;
 
         String name;
-        System.out.println("Whats your name? ");
-        name = keyboardInput.next();
+        int userId;
+        System.out.print("User ID: ");
+        userId = keyboardInput.nextInt();
+        Persons loggedInPerson = personDbService.fetchById(userId);
+        name = loggedInPerson.getVorname() + " " + loggedInPerson.getNachname();
         greetings(name);
 
         while (exitFlag != true) {
@@ -35,44 +28,54 @@ public class App {
                     " delete Person = 4, show Tasks = 5, add Task = 6, update Task = 7, delete Task = 8, exit = 9):");
 
             switch (keyboardInput.next()) {
-                case "2":
-                    insertDbData();
-                    break;
-                case "6":
-                    showTasks();
-                    break;
-                case "4":
-                    System.out.print("Which user would you like to delete? (person id):");
-                    deleteDbData(keyboardInput.nextInt());
-                    break;
-                case "8":
-                    System.out.print("Which task would you like to delete? (task id):");
-                    deleteTasks(keyboardInput.nextInt());
-                    break;
-                case "exit":
-                    exitFlag = true;
-                    db.close();
-                    System.out.println("Good bye " + name);
-                    break;
                 case "1":
                     System.out.println("Below is a list of Persons available");
                     getDbData();
                     break;
-                case "5":
-                    System.out.println("Below is a list of Tasks");
-                    showTasks();
+                case "2":
+                    insertDbData();
                     break;
                 case "3":
                     System.out.println("Which user would you like to update? (person id):");
                     updateDbData(keyboardInput.nextInt());
                     break;
+                case "4":
+                    System.out.print("Which user would you like to delete? (person id):");
+                    deleteDbData(keyboardInput.nextInt());
+                    break;
+                case "5":
+                    System.out.println("Below is a list of Tasks");
+                    showTasks();
+                    break;
+                case "6":
+                    showTasks();
+                    break;
                 case "7":
                     System.out.println("Below is a list of Tasks");
                     showTasks();
                     System.out.println("Which task would you like to update? (task id):");
-//                    (keyboardInput.nextInt());
+                    int taskId = keyboardInput.nextInt();
+                    System.out.println("What do you want to update? (status: 1, description: 2, assigned Peson: 3");
+                    switch (keyboardInput.nextInt()) {
+                        case 1:
+                            taskUpdateStatus(taskId, keyboardInput);
+                            break;
+                        case 2:
+                            taskUpdateDescription(taskId, keyboardInput);
+                            break;
+                        case 3:
+                            break;
+                    }
                     break;
-
+                case "8":
+                    System.out.print("Which task would you like to delete? (task id):");
+                    deleteTasks(keyboardInput.nextInt());
+                    break;
+                case "9":
+                    exitFlag = true;
+                    personDbService.close();
+                    System.out.println("Good bye " + name);
+                    break;
                 default:
                     System.out.println("You have selected an incorrect value!!");
                     break;
@@ -86,12 +89,45 @@ public class App {
 
     }
 
+    private static void taskUpdateDescription(int taskId, Scanner keyboardInput) {
+        Tasks taskToBeUpdated = taskDatabaseSevice.fetchTask(taskId);
+        System.out.print("Put in the new description: ");
+        String newDescription = keyboardInput.next();
+        taskToBeUpdated.setDescription(newDescription);
+        taskDatabaseSevice.updateDescription(taskToBeUpdated);
+    }
+
+    private static void taskUpdateStatus(int taskId, Scanner keyboardInput) {
+        Tasks taskToBeUpdated = taskDatabaseSevice.fetchTask(taskId);
+        System.out.print("New status(a=new, b=started, c=complete): ");
+        char newStatus = keyboardInput.next().charAt(0);
+        taskToBeUpdated.setStatus(newStatus);
+
+        switch (newStatus) {
+            case 'a':
+                break;
+            case 'b':
+                taskToBeUpdated.setStartDate(new Date());
+                break;
+            case 'c':
+                taskToBeUpdated.setCompletionDate(new Date());
+                break;
+            default:
+                System.out.println("Unexpected value: " + keyboardInput.next());
+                //throw new IllegalStateException("Unexpected value: " + keyboardInput.next());
+        }
+
+        taskDatabaseSevice.updateStatus(taskToBeUpdated);
+    }
+
     private static void deleteTasks(int taskId) {
     }
 
     private static void showTasks() {
-
         List<Tasks> tasks = taskDatabaseSevice.fetchAllTasks();
+        tasks.forEach(tasks1 -> {
+            System.out.println(tasks1.toString());
+        });
     }
 
 
@@ -115,7 +151,7 @@ public class App {
 
 //        int updateCount = db.update(updatedPerson);
 //        System.out.println("number of Persons updated: " + updateCount);
-        System.out.println("number of Persons updated: " + db.update(updatedPerson));
+        System.out.println("number of Persons updated: " + personDbService.update(updatedPerson));
     }
 
     /*private static void connectAndUpdate(Persons updatedPerson, int personId) {
@@ -143,7 +179,7 @@ public class App {
     private static void deleteDbData(int personId) {
         Persons persons = new Persons();
         persons.setPersId(personId);
-        int count = db.delete(persons);
+        int count = personDbService.delete(persons);
         System.out.println("number of Persons deleted: " + count);
     }
 
@@ -186,7 +222,7 @@ public class App {
 
         System.out.println(newPerson.toString());
 
-        int count = db.insert(newPerson);
+        int count = personDbService.insert(newPerson);
         System.out.println("Number of persons added " + count);
         //connectAndInsert(newPerson);
     }
@@ -223,7 +259,7 @@ public class App {
     }
 
     private static void getDbData() {
-        List<Persons> people = db.fetchAll();
+        List<Persons> people = personDbService.fetchAll();
         System.out.println("number of persons: " + people.size());
 
         //old way to loop through a list
