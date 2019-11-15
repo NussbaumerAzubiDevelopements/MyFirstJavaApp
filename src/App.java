@@ -2,6 +2,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
 
+
 public class App {
     static int iFinal = 0;
     //    static DatabaseServiceInterface db = new DatabaseServiceImpl();
@@ -30,7 +31,7 @@ public class App {
             switch (keyboardInput.next()) {
                 case "1":
                     System.out.println("Below is a list of Persons available");
-                    getDbData();
+                    showPersons();
                     break;
                 case "2":
                     insertDbData();
@@ -48,14 +49,14 @@ public class App {
                     showTasks();
                     break;
                 case "6":
-                    showTasks();
+                    insertTasks();
                     break;
                 case "7":
                     System.out.println("Below is a list of Tasks");
                     showTasks();
-                    System.out.println("Which task would you like to update? (task id):");
+                    System.out.print("Which task would you like to update? (task id):");
                     int taskId = keyboardInput.nextInt();
-                    System.out.println("What do you want to update? (status: 1, description: 2, assigned Peson: 3");
+                    System.out.print("What do you want to update? (status: 1, description: 2, assigned Peson: 3):");
                     switch (keyboardInput.nextInt()) {
                         case 1:
                             taskUpdateStatus(taskId, keyboardInput);
@@ -64,6 +65,7 @@ public class App {
                             taskUpdateDescription(taskId, keyboardInput);
                             break;
                         case 3:
+                            taskUpdateAssignedPerson(taskId, keyboardInput);
                             break;
                     }
                     break;
@@ -86,8 +88,56 @@ public class App {
         //tryingNewClasses();
         //showTasks();
         //deleteTasks();
+        //insertTasks();
 
     }
+
+    private static void taskUpdateAssignedPerson(int taskId, Scanner keyboardInput) {
+        Tasks updateTask = taskDatabaseSevice.fetchTask(taskId);
+        showPersons();
+        System.out.print("Assigned person:");
+        updateTask.setPersId(keyboardInput.nextInt());
+        taskDatabaseSevice.updateAssignee(updateTask);
+    }
+
+    private static void insertTasks() {
+        Scanner keyboardInput = new Scanner(System.in);
+        Tasks newTask = new Tasks();
+
+        //Get user input from keyboard, set input on new person instance in two steps
+
+
+        //Get user input from keyboard, set input on new person instance in one step
+        System.out.print("Description :");
+        newTask.setDescription(keyboardInput.next());
+
+//        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+
+//        System.out.print("Start date (yyyy-MM-dd) :");
+//        Date startDate = new Date();
+//        try {
+//            startDate = format.parse(keyboardInput.next());
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//        }
+//        newTask.setStartDate(startDate);
+
+//        System.out.print("Complete Date :");
+        //newTask.setCompletionDate(keyboardInput.next());
+
+        System.out.print("Assigned person :");
+        newTask.setPersId(keyboardInput.nextInt());
+
+        newTask.setStatus('a');
+        newTask.setCreateDate(new Date());
+        System.out.println(newTask.toString());
+
+
+        int count = taskDatabaseSevice.insert(newTask);
+        System.out.println("Number of tasks added " + count);
+
+    }
+
 
     private static void taskUpdateDescription(int taskId, Scanner keyboardInput) {
         Tasks taskToBeUpdated = taskDatabaseSevice.fetchTask(taskId);
@@ -227,6 +277,8 @@ public class App {
         //connectAndInsert(newPerson);
     }
 
+
+
    /* private static void connectAndInsert(Persons insertPerson) {
         String url = "jdbc:postgresql://160.47.9.154:15432/q450811";
         String user = "admin";
@@ -258,7 +310,7 @@ public class App {
         System.out.println("Good morning " + name);
     }
 
-    private static void getDbData() {
+    private static void showPersons() {
         List<Persons> people = personDbService.fetchAll();
         System.out.println("number of persons: " + people.size());
 
@@ -268,82 +320,83 @@ public class App {
             System.out.println("index:" + i + " = " + p.toString());
         }
     }
-
-
-       /* String url = "jdbc:postgresql://160.47.9.154:15432/q450811";
-        String user = "admin";
-        String password = "admin";
-
-        try {
-            //Creating connection instance to the database
-            Connection con = DriverManager.getConnection(url, user, password);
-
-            //Creating a statement instance from the connection
-            Statement stmt = con.createStatement();
-
-            //Creating a result set from the executed statement query
-            ResultSet rs = stmt.executeQuery("select * from Personen");
-
-            Persons personA;
-	    		if(rs.next()) {
-	    			personA = new Persons(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4));
-	    			System.out.println(personA.toString());
-	    		}
-	    		if(rs.next()) {
-	    			personA = new Persons(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4));
-	    			System.out.println(personA.toString());
-	    		}
-
-            //Persons[] peopleArray = new Persons[6];
-            //*List<Persons> people = new ArrayList();
-            while (rs.next()) {
-                personA = new Persons(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4));
-                people.add(personA);
-                //people.add(new Persons(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4)));
-            }
-
-            System.out.println("number of persons: " + people.size());
-
-            //new way to loop through a list
-	    		/*people.forEach( p -> {
-	    			iFinal++;
-	    			System.out.println(iFinal);
-	    			System.out.println(p);
-	    		});*/
-
-
-	    		/*Persons p = people.get(0);
-				System.out.println(p.toString());
-				 p = people.get(1);
-				System.out.println(p.toString());
-				 p = people.get(1);
-				System.out.println(p.toString());
-				 p = people.get(1);
-				System.out.println(p.toString());
-				 p = people.get(1);
-				System.out.println(p.toString());
-				 p = people.get(5);
-				System.out.println(p.toString());*/
-
-    //old way to loop through a list
-           /* for (int i = 0; i < people.size(); i++) {
-
-                Persons p = people.get(i);
-                System.out.println("index:" + i + " = " + p.toString());
-            }
-
-            //while loop
-				/*int i = 0;
-				while(i < 6) {
-					p = people.get(i);
-					System.out.println(p.toString());
-					i++;
-				}*/
-
-    //while(rs.next())
-    //System.out.println(rs.getInt(1)+"  "+rs.getString(2)+"  "+rs.getString(3)+"   "+rs.getString(4));
-//}
-
-
 }
 
+
+//       /* String url = "jdbc:postgresql://160.47.9.154:15432/q450811";
+//        String user = "admin";
+//        String password = "admin";
+//
+//        try {
+//            //Creating connection instance to the database
+//            Connection con = DriverManager.getConnection(url, user, password);
+//
+//            //Creating a statement instance from the connection
+//            Statement stmt = con.createStatement();
+//
+//            //Creating a result set from the executed statement query
+//            ResultSet rs = stmt.executeQuery("select * from Personen");
+//
+//            Persons personA;
+//	    		if(rs.next()) {
+//	    			personA = new Persons(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4));
+//	    			System.out.println(personA.toString());
+//	    		}
+//	    		if(rs.next()) {
+//	    			personA = new Persons(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4));
+//	    			System.out.println(personA.toString());
+//	    		}
+//
+//            //Persons[] peopleArray = new Persons[6];
+//            //*List<Persons> people = new ArrayList();
+//            while (rs.next()) {
+//                personA = new Persons(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4));
+//                people.add(personA);
+//                //people.add(new Persons(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4)));
+//            }
+//
+//            System.out.println("number of persons: " + people.size());
+//
+//            //new way to loop through a list
+//	    		/*people.forEach( p -> {
+//	    			iFinal++;
+//	    			System.out.println(iFinal);
+//	    			System.out.println(p);
+//	    		});*/
+//
+//
+//	    		/*Persons p = people.get(0);
+//				System.out.println(p.toString());
+//				 p = people.get(1);
+//				System.out.println(p.toString());
+//				 p = people.get(1);
+//				System.out.println(p.toString());
+//				 p = people.get(1);
+//				System.out.println(p.toString());
+//				 p = people.get(1);
+//				System.out.println(p.toString());
+//				 p = people.get(5);
+//				System.out.println(p.toString());*/
+//
+//    //old way to loop through a list
+//           /* for (int i = 0; i < people.size(); i++) {
+//
+//                Persons p = people.get(i);
+//                System.out.println("index:" + i + " = " + p.toString());
+//            }
+//
+//            //while loop
+//				/*int i = 0;
+//				while(i < 6) {
+//					p = people.get(i);
+//					System.out.println(p.toString());
+//					i++;
+//				}*/
+//
+//    //while(rs.next())
+//    //System.out.println(rs.getInt(1)+"  "+rs.getString(2)+"  "+rs.getString(3)+"   "+rs.getString(4));
+////}
+//
+//
+//}
+//
