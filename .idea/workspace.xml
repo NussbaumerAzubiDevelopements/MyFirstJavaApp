@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="48d67369-8220-4385-9e35-31ed58e2df02" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/sql/backup" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/App.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/TaskDatabaseSevice.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/TaskDatabaseSevice.java" afterDir="false" />
@@ -116,7 +115,14 @@
       <option name="project" value="LOCAL" />
       <updated>1573736268363</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="continue working on tasks">
+      <created>1573818636974</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1573818636974</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -170,6 +176,11 @@
           <url>file://$PROJECT_DIR$/src/App.java</url>
           <line>169</line>
           <option name="timeStamp" value="15" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/TaskDatabaseSevice.java</url>
+          <line>60</line>
+          <option name="timeStamp" value="16" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

@@ -170,8 +170,13 @@ public class App {
         taskDatabaseSevice.updateStatus(taskToBeUpdated);
     }
 
-    private static void deleteTasks(int taskId) {
+    private static void deleteTasks(int deleteTasks) {
+        Tasks tasks = new Tasks();
+        tasks.setTaskId(deleteTasks);
+        int count = taskDatabaseSevice.delete(tasks);
+        System.out.println("number of tasks deleted: " + count);
     }
+
 
     private static void showTasks() {
         List<Tasks> tasks = taskDatabaseSevice.fetchAllTasks();

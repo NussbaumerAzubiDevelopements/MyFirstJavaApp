@@ -52,14 +52,14 @@ public class TaskDatabaseSevice {
         return result;
     }
 
-    public int delete(Tasks deleteTasks) {
+    public int delete(Tasks tasks) {
         int result = 0;
         try {
 
             Statement stmt = con.createStatement();
 
             String query = "DELETE FROM public.Tasks" +
-                    "WHERE <condition>;";
+                    "WHERE task_id " + tasks + " ;";
 
             result = stmt.executeUpdate(query);
 
